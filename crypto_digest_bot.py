@@ -5,6 +5,7 @@ from datetime import datetime
 
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHANNEL_ID = os.environ["TELEGRAM_CHANNEL_ID"]  # e.g. "@yourchannelname" or a numeric channel ID
+COINGECKO_API_KEY = os.environ["COINGECKO_API_KEY"]  # free "Demo" key from coingecko.com
 
 NEWS_FEEDS = [
     "https://www.coindesk.com/arc/outboundfeeds/rss/",
@@ -22,7 +23,8 @@ def get_market_movers():
         "page": 1,
         "price_change_percentage": "24h",
     }
-    resp = requests.get(url, params=params, timeout=15)
+    headers = {"x-cg-demo-api-key": COINGECKO_API_KEY}
+    resp = requests.get(url, params=params, headers=headers, timeout=15)
     resp.raise_for_status()
     coins = resp.json()
 
